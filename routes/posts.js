@@ -16,7 +16,7 @@ router.post("/", (req, res) => {
 });
 
 // @route   PUT api/posts/:id
-// @desc    Update posts
+// @desc    Update post
 // @access  Private
 router.put("/:id", (req, res) => {
   res.send("Update post");
