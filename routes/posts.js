@@ -23,7 +23,7 @@ router.put("/:id", (req, res) => {
 });
 
 // @route   DELETE api/posts/:id
-// @desc    Delete posts
+// @desc    Delete post
 // @access  Private
 router.delete("/:id", (req, res) => {
   res.send("Delete post");
