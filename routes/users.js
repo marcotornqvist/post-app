@@ -6,9 +6,10 @@ const config = require("config");
 const { check, validationResult } = require("express-validator");
 
 const User = require("../models/User");
+const Post = require("../models/Post");
 
 // @route     POST api/users
-// @desc      Regiter a user
+// @desc      Register a user
 // @access    Public
 router.post(
   "/",
@@ -81,5 +82,35 @@ router.post(
     }
   }
 );
+
+// @route   GET api/:id
+// @desc    Get specified user and its posts
+// @access  Public
+router.get("/:id", async (req, res) => {
+  try {
+    const posts = await Post.find({ userID: req.params.id }).sort({
+      date: -1
+    });
+    res.json(posts);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   GET api/:id
+// @desc    Get specified user and its posts
+// @access  Public
+router.get("/:id", async (req, res) => {
+  try {
+    const posts = await Post.find({ userID: req.params.id }).sort({
+      date: -1
+    });
+    res.json(posts);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;

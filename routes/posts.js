@@ -5,29 +5,12 @@ const { check, validationResult } = require("express-validator");
 
 const Post = require("../models/Post");
 
-// TODO: Create a route to get all posts and a route to get posts only from a single specified user
-
 // @route   GET api/posts
 // @desc    Get all posts
 // @access  Public
-// router.get("/", auth, async (req, res) => {
-//   try {
-//     const posts = await Post.find({ user: req.user.id }).sort({
-//       date: -1
-//     });
-//     res.json(posts);
-//   } catch (err) {
-//     console.error(err.message);
-//     res.status(500).send("Server Error");
-//   }
-// });
-
-// @route   GET api/posts
-// @desc    Get all posts from a specific user
-// @access  Private
-router.get("/users/:id", auth, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const posts = await Post.find({ user: req.user.id }).sort({
+    const posts = await Post.find().sort({
       date: -1
     });
     res.json(posts);
@@ -37,46 +20,19 @@ router.get("/users/:id", auth, async (req, res) => {
   }
 });
 
-// @route   POST api/posts
-// @desc    Add new post
-// @access  Private
-router.post(
-  "/",
-  [
-    auth,
-    [
-      check("title", "Title is required")
-        .not()
-        .isEmpty(),
-      check("body", "Body is required")
-        .not()
-        .isEmpty()
-    ]
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+// @route   GET api/posts/:id
+// @desc    Get a single post
+// @access  Public
+router.get("/:id", async (req, res) => {
+  try {
+    let post = await Post.findById(req.params.id);
 
-    const { title, body } = req.body;
-
-    try {
-      const newPost = new Post({
-        title,
-        body,
-        user: req.user.id
-      });
-
-      const post = await newPost.save();
-
-      res.json(post);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server Error");
-    }
+    res.json(post);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
-);
+});
 
 // @route   PUT api/posts/:id
 // @desc    Update post
