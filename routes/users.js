@@ -88,7 +88,7 @@ router.post(
 // @access  Public
 router.get("/:id", async (req, res) => {
   try {
-    const posts = await Post.find({ userID: req.params.id }).sort({
+    const posts = await Post.find({ user: req.params.id }).sort({
       date: -1
     });
     res.json(posts);
@@ -103,7 +103,7 @@ router.get("/:id", async (req, res) => {
 // @access  Public
 router.get("/:id", async (req, res) => {
   try {
-    const posts = await Post.find({ userID: req.params.id }).sort({
+    const posts = await Post.find({ user: req.params.id }).sort({
       date: -1
     });
     res.json(posts);
