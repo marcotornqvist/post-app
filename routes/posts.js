@@ -151,6 +151,13 @@ router.put("/like/:id", auth, async (req, res) => {
       return res.status(400).json({ msg: "Post already liked" });
     }
 
+    // Get remove index
+    const removeIndex = post.dislikes
+      .map(dislike => dislike.user.toString())
+      .indexOf(req.user.id);
+
+    post.dislikes.splice(removeIndex, 1);
+
     post.likes.unshift({ user: req.user.id });
 
     await post.save();
@@ -162,20 +169,22 @@ router.put("/like/:id", auth, async (req, res) => {
   }
 });
 
-// @route    PUT api/posts/unlike/:id
-// @desc     Unlike a post
+// @route    PUT api/posts/dislike/:id
+// @desc     Dislike a post
 // @access   Private
-router.put("/unlike/:id", auth, async (req, res) => {
+router.put("/dislike/:id", auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
-    // Check if the post has already been liked
+    // Check if the post has already been disliked
     if (
-      post.likes.filter(like => like.user.toString() === req.user.id).length ===
-      0
+      post.dislikes.filter(dislike => dislike.user.toString() === req.user.id)
+        .length > 0
     ) {
-      return res.status(400).json({ msg: "Post has not yet been liked" });
+      return res.status(400).json({ msg: "Post already disliked" });
     }
+
+    post.dislikes.unshift({ user: req.user.id });
 
     // Get remove index
     const removeIndex = post.likes
@@ -186,7 +195,83 @@ router.put("/unlike/:id", auth, async (req, res) => {
 
     await post.save();
 
+    res.json(post.dislikes);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route    REMOVE api/posts/like/:id/:like_user
+// @desc     Remove like
+// @access   Private
+router.delete("/like/:id/:like_user", auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    // Pull out like
+    const like = post.likes.find(
+      like => like.user.toString() === req.params.like_user
+    );
+
+    // Make sure like exists
+    if (!like) {
+      return res.status(404).json({ msg: "Like does not exist" });
+    }
+
+    // Check user
+    if (like.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "User not authorized" });
+    }
+
+    // Get remove index
+    const removeIndex = post.likes
+      .map(like => like.id)
+      .indexOf(req.params.like_user);
+
+    post.likes.splice(removeIndex, 1);
+
+    await post.save();
+
     res.json(post.likes);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route    REMOVE api/posts/dislike/:id/:dislike_user
+// @desc     Remove dislike
+// @access   Private
+router.delete("/dislike/:id/:dislike_user", auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    // Pull out dislike
+    const dislike = post.dislikes.find(
+      dislike => dislike.user.toString() === req.params.dislike_user
+    );
+
+    // Make sure dislike exists
+    if (!dislike) {
+      return res.status(404).json({ msg: "Dislike does not exist" });
+    }
+
+    // Check user
+    if (dislike.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "User not authorized" });
+    }
+
+    // Get remove index
+    const removeIndex = post.dislikes
+      .map(dislike => dislike.user.toString())
+      .indexOf(req.params.dislike_user);
+
+    post.dislikes.splice(removeIndex, 1);
+
+    await post.save();
+
+    res.json(post.dislikes);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
