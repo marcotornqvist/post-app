@@ -61,13 +61,16 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { title, body } = req.body;
+    const user = await User.findById(req.user.id).select("username");
+
+    const { title, text } = req.body;
 
     try {
       const newPost = new Post({
         title,
         text,
-        user: req.user.id
+        user: req.user.id,
+        username: user.username
       });
 
       const post = await newPost.save();
@@ -84,12 +87,12 @@ router.post(
 // @desc    Update post
 // @access  Private
 router.put("/:id", auth, async (req, res) => {
-  const { title, body } = req.body;
+  const { title, text } = req.body;
 
   // Build post object
   const postFields = {};
   if (title) postFields.title = title;
-  if (body) postFields.body = body;
+  if (text) postFields.text = text;
 
   try {
     let post = await Post.findById(req.params.id);
@@ -302,9 +305,9 @@ router.post(
       const post = await Post.findById(req.params.id);
 
       const newComment = {
+        user: req.user.id,
         text: req.body.text,
-        name: user.name,
-        user: req.user.id
+        username: user.username
       };
 
       post.comments.unshift(newComment);

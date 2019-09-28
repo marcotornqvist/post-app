@@ -1,0 +1,10 @@
+// If you want to reference to the bootstrap variables check in node_modules/bootstrap/scss/_variables.scss
+$navbar-dark-color: white;
+$navbar-dark-hover-color: white;
+$navbar-dark-toggler-border-color: white;
+
+$primary: #25277a;
+$secondary: #03bd85;
+$danger: #fb0246;
+
+@import "../node_modules/bootstrap/scss/bootstrap";

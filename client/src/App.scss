@@ -1,0 +1,16 @@
+// Custom Overrides.
+// Remember to import the overrides first so that they are applied to the rest of the styling
+@import "./styles/overrides/custom-btsp";
+
+// All main styling
+@import "./styles/main";
+
+// Components
+@import "./styles/components/button";
+
+// Layout
+@import "./styles/layout/header";
+@import "./styles/layout/footer";
+
+// Pages
+@import "./styles/pages/home";

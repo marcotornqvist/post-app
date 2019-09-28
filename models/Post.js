@@ -5,6 +5,10 @@ const PostSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "users"
   },
+  username: {
+    type: String,
+    required: true
+  },
   title: {
     type: String,
     required: true
@@ -39,7 +43,7 @@ const PostSchema = mongoose.Schema({
         type: String,
         required: true
       },
-      name: {
+      username: {
         type: String
       },
       date: {
