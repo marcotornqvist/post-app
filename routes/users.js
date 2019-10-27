@@ -98,19 +98,4 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// @route   GET api/:id
-// @desc    Get specified user and its posts
-// @access  Public
-router.get("/:id", async (req, res) => {
-  try {
-    const posts = await Post.find({ user: req.params.id }).sort({
-      date: -1
-    });
-    res.json(posts);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
-});
-
 module.exports = router;
