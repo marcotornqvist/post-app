@@ -7,7 +7,7 @@ const Post = require("../models/Post");
 const User = require("../models/User");
 
 // @route   GET api/posts
-// @desc    Get all posts
+// @desc    Get 10 of the latest posts
 // @access  Public
 router.get("/", async (req, res) => {
   try {

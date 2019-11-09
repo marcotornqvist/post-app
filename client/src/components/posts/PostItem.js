@@ -5,9 +5,15 @@ import PostContext from "../../context/post/postContext";
 
 const PostItem = ({ post }) => {
   const postContext = useContext(PostContext);
+
   const { deletePost, setCurrent, clearCurrent } = postContext;
 
   const { _id, title, text, username, likes, dislikes, comments, date } = post;
+
+  const onDelete = () => {
+    deletePost(_id);
+    clearCurrent();
+  };
 
   return (
     <div className="col-md-6">
@@ -37,8 +43,12 @@ const PostItem = ({ post }) => {
           </Link>
         </div>
         <div className="buttons">
-          <button className="btn btn-primary">Edit</button>
-          <button className="btn btn-primary">Delete</button>
+          <button className="btn btn-primary" onClick={() => setCurrent(post)}>
+            Edit
+          </button>
+          <button className="btn btn-danger" onClick={onDelete}>
+            Delete
+          </button>
         </div>
       </div>
     </div>

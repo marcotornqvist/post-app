@@ -5,14 +5,18 @@ import PostContext from "../../context/post/postContext";
 const Posts = () => {
   const postContext = useContext(PostContext);
 
-  const { posts } = postContext;
+  const { posts, filtered } = postContext;
+
+  if (posts.length === 0) {
+    return <h4>Please add a contact</h4>;
+  }
 
   return (
     <div className="posts">
       <div className="row">
-        {posts.map(post => (
-          <PostItem key={post._id} post={post} />
-        ))}
+        {filtered !== null
+          ? filtered.map(post => <PostItem key={post._id} post={post} />)
+          : posts.map(post => <PostItem key={post._id} post={post} />)}
       </div>
     </div>
   );

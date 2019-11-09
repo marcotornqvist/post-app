@@ -1,12 +1,16 @@
 .home {
   padding-top: 50px;
+
+  h2 {
+    color: white;
+  }
 }
 
 .home .posts .col-md-6 {
-  padding: 0 10px 20px 10px;
+  padding: 0 15px 15px 15px;
 }
 
-.home .posts .col-md-6 .post {
+.home .posts .post {
   padding: 20px;
   border-radius: 10px;
   height: 100%;
@@ -71,4 +75,8 @@
       border: none;
     }
   }
+}
+
+.home .filter {
+  margin-bottom: 15px;
 }

@@ -1,10 +1,50 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
+import AuthContext from "../../context/auth/authContext";
 
 const Navbar = () => {
+  const authContext = useContext(AuthContext);
+
+  const { isAuthenticated, logout, loadUser } = authContext;
+
+  useEffect(() => {
+    loadUser();
+    // eslint-disable-next-line
+  }, []);
+
+  const onLogout = () => {
+    logout();
+    // clearContacts();
+  };
+
+  const authLinks = (
+    <Fragment>
+      <li>
+        <a onClick={onLogout} href="#!">
+          <span className="nav-link">Logout</span>
+        </a>
+      </li>
+    </Fragment>
+  );
+
+  const guestLinks = (
+    <Fragment>
+      <li className="nav-item">
+        <Link className="nav-link" to="/register">
+          Register
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link className="nav-link" to="/login">
+          Login
+        </Link>
+      </li>
+    </Fragment>
+  );
+
   return (
     <Fragment>
-      <nav className="navbar navbar-dark bg-primary">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
         <Link className="navbar-brand" to="/">
           <i className="fab fa-pied-piper fa-lg"></i> Post App
         </Link>
@@ -21,21 +61,7 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link className="nav-link" to="/register">
-                Register
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/login">
-                Login
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/logout">
-                Logout
-              </Link>
-            </li>
+            {isAuthenticated ? authLinks : guestLinks}
           </ul>
         </div>
       </nav>

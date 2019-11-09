@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import axios from "axios";
+import uuid from "uuid";
 import PostContext from "./postContext";
 import postReducer from "./postReducer";
 import {
@@ -84,29 +84,62 @@ const PostState = props => {
         date: "2019-09-22T19:50:41.259Z",
         __v: 7
       }
-    ]
+    ],
+    current: null,
+    filtered: null
   };
 
   const [state, dispatch] = useReducer(postReducer, initialState);
 
   // Add Post
+  const addPost = post => {
+    post._id = uuid.v4();
+    dispatch({ type: ADD_POST, payload: post });
+  };
 
   // Delete Post
+  const deletePost = _id => {
+    dispatch({ type: DELETE_POST, payload: _id });
+  };
 
   // Set Current Post
+  const setCurrent = post => {
+    dispatch({ type: SET_CURRENT, payload: post });
+  };
 
   // Clear Current Post
+  const clearCurrent = post => {
+    dispatch({ type: CLEAR_CURRENT });
+  };
 
   // Update Post
+  const updatePost = post => {
+    dispatch({ type: UPDATE_POST, payload: post });
+  };
 
   // Filter Posts
+  const filterPosts = text => {
+    dispatch({ type: FILTER_POSTS, payload: text });
+  };
 
   // Clear Filter
+  const clearFilter = text => {
+    dispatch({ type: CLEAR_FILTER });
+  };
 
   return (
     <PostContext.Provider
       value={{
-        posts: state.posts
+        posts: state.posts,
+        current: state.current,
+        filtered: state.filtered,
+        addPost,
+        deletePost,
+        setCurrent,
+        clearCurrent,
+        updatePost,
+        filterPosts,
+        clearFilter
       }}
     >
       {props.children}
