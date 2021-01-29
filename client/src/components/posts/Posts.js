@@ -1,14 +1,19 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import PostItem from "./PostItem";
 import PostContext from "../../context/post/postContext";
 
 const Posts = () => {
   const postContext = useContext(PostContext);
 
-  const { posts, filtered } = postContext;
+  const { posts, filtered, getPosts } = postContext;
 
-  if (posts.length === 0) {
-    return <h4>Please add a contact</h4>;
+  useEffect(() => {
+    getPosts();
+    // eslint-disable-next-line
+  }, []);
+
+  if (posts !== null && posts.length === 0) {
+    return <h4>Please add a Post</h4>;
   }
 
   return (

@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import AuthContext from "../../context/auth/authContext";
 
 const Navbar = () => {
@@ -14,15 +14,20 @@ const Navbar = () => {
 
   const onLogout = () => {
     logout();
-    // clearContacts();
+    // clearPosts();
   };
 
   const authLinks = (
     <Fragment>
-      <li>
-        <a onClick={onLogout} href="#!">
-          <span className="nav-link">Logout</span>
-        </a>
+      <li className="nav-item">
+        <Link onClick={onLogout} className="nav-link" to="/">
+          Logout
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link className="nav-link" to="/publish">
+          Publish
+        </Link>
       </li>
     </Fragment>
   );
