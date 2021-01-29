@@ -1,6 +1,8 @@
 # Post APP
 
-> Add your own MONGO_URI & JWT_SECRET in .env to get app to work
+(App is still in development)
+
+> Add your own MONGO_URI & JWT_SECRET in a .env file to get the app to work
 
 ```bash
 MONGO_URI=
@@ -15,8 +17,8 @@ Install dependencies
 npm install
 ```
 
-### Run Server
+### Run Server & Client with Concurrently
 
 ```bash
-npm start
+npm run dev
 ```
